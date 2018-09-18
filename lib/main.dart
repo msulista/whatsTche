@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+
 void main() {
   runApp(new MyApp());
 }
@@ -55,6 +56,7 @@ void _sendMessage({String text, String imgUrl}) {
       "texto" : text,
       "imgUrl" : imgUrl,
       "senderName" : googleSignIn.currentUser.displayName,
+      "senderId" : googleSignIn.currentUser.id,
       "senderPhotoUrl" : googleSignIn.currentUser.photoUrl
     }
   );
@@ -230,7 +232,8 @@ class ChatMessage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+//        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: (googleSignIn.currentUser != null && googleSignIn.currentUser.id == data["senderId"])  ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(right: 16.0),
@@ -240,7 +243,7 @@ class ChatMessage extends StatelessWidget {
           ),
           Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: (googleSignIn.currentUser != null && googleSignIn.currentUser.id == data["senderId"])  ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(data["senderName"], style: Theme.of(context).textTheme.subhead,),
                   Container(
